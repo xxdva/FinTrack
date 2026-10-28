@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "_macros.html" import type_toggle, select %}
+{% block content %}
+<div class="header">
+  <div class="title"><h1>Новая операция</h1></div>
+</div>
+
+<div class="row">
+  <form class="card card--form grow" id="operation-form" data-toast="✓ Операция добавлена" novalidate>
+    {{ type_toggle('Расход') }}
+
+    <div class="field-row">
+      <label class="field">
+        <span class="field__label">Сумма, ₸</span>
+        <input class="input" name="amount" value="12 400" inputmode="numeric" data-amount>
+      </label>
+      <label class="field">
+        <span class="field__label">Дата</span>
+        <input class="input" name="date" value="24.10.2026">
+      </label>
+    </div>
+
+    <div class="field-row">
+      {{ select('category', 'Категория', categories, 'Продукты') }}
+      {{ select('account', 'Счёт', accounts, 'Kaspi Gold') }}
+    </div>
+
+    <label class="field">
+      <span class="field__label">Комментарий</span>
+      <input class="input" name="comment" value="Magnum">
+    </label>
+
+    <div class="switch-row" data-switch>
+      <div class="switch"><div class="switch__knob"></div></div>
+      <span data-switch-label>Повторять платёж: не повторять</span>
+    </div>
+
+    <p class="hint" data-hint>Поле «Сумма» обязательно. Допускаются только числа больше 0.</p>
+
+    <div class="btn-group btn-group--16">
+      <button type="submit" class="btn btn--income">Сохранить</button>
+      <button type="button" class="btn btn--outline" data-clear>Очистить</button>
+      <a class="btn btn--outline" href="{{ url_for('operations') }}">Отмена</a>
+    </div>
+  </form>
+
+  <div class="side-panel">
+    <section class="card card--side">
+      <h2 class="card__title">Быстрые категории</h2>
+      {% for c in ['Продукты', 'Транспорт', 'Кафе', 'Связь', 'Учёба'] %}
+      <button type="button" class="btn btn--outline btn--block" data-quick-category="{{ c }}">{{ c }}</button>
+      {% endfor %}
+    </section>
+    <section class="card card--side">
+      <h2 class="card__title">Подсказка</h2>
+      <p class="field__label">Ctrl+S — сохранить</p>
+      <p class="field__label">Esc — закрыть окно</p>
+    </section>
+  </div>
+</div>
+
+<div class="toast" data-toast-el></div>
+{% endblock %}

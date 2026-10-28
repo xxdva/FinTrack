@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinTrack — {{ window_title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="window">
+    <header class="titlebar">
+      <span>FinTrack — {{ window_title }}</span>
+      <div class="titlebar__buttons"><span></span><span></span><span></span></div>
+    </header>
+    <div class="accent-line"></div>
+
+    <div class="body">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo__name">FinTrack</span>
+          <span class="logo__sub">Финансовый ассистент</span>
+        </div>
+        <nav class="menu">
+          {% for item in nav %}
+          <a class="menu__item{% if item.endpoint == active %} is-active{% endif %}" href="{{ url_for(item.endpoint) }}">{{ item.title }}</a>
+          {% endfor %}
+        </nav>
+        <div class="profile">Профиль: {{ user_name }}</div>
+      </aside>
+
+      <main class="content">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

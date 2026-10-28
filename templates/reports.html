@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="header header--end">
+  <div class="title"><h1>Отчёты и аналитика</h1></div>
+  <div class="btn-group" style="align-items:flex-end">
+    <label class="field" style="width:190px">
+      <span class="field__label">Период</span>
+      <select class="input"><option>Октябрь 2026</option><option>Сентябрь 2026</option><option>Август 2026</option><option>Июль 2026</option></select>
+    </label>
+    <button type="button" class="btn btn--accent">Построить</button>
+    <button type="button" class="btn btn--outline">Экспорт в CSV</button>
+  </div>
+</div>
+
+<div class="row row--stretch">
+  <section class="card grow">
+    <h2 class="card__title">Доходы и расходы по месяцам, тыс. ₸</h2>
+    <div class="legend">
+      <span class="legend__item"><span class="legend__swatch bg-income"></span>Доходы</span>
+      <span class="legend__item"><span class="legend__swatch bg-expense"></span>Расходы</span>
+    </div>
+    <div class="chart">
+      {% for m in months %}
+      <div class="chart__month">
+        <div class="chart__bars">
+          <div class="chart__bar bg-income" style="height: {{ m.income }}px" title="Доходы"></div>
+          <div class="chart__bar bg-expense" style="height: {{ m.expense }}px" title="Расходы"></div>
+        </div>
+        <span class="chart__label">{{ m.name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="card totals">
+    <h2 class="card__title">Итоги периода</h2>
+    <div class="total"><span class="total__label">Доходы</span><span class="total__value text-income">+120 000 ₸</span></div>
+    <div class="total"><span class="total__label">Расходы</span><span class="total__value text-expense">-75 390 ₸</span></div>
+    <div class="total"><span class="total__label">Сбережения</span><span class="total__value">44 610 ₸</span></div>
+    <div class="total"><span class="total__label">Норма сбережений</span><span class="total__value">37%</span></div>
+    <div class="total"><span class="total__label">Самая большая трата</span><span class="total__value">Учёба</span></div>
+  </section>
+</div>
+
+<section class="card advice">
+  <h2 class="card__title">Совет ассистента</h2>
+  <p>Расходы на учёбу и одежду составили больше половины всех трат за октябрь.</p>
+  <p>Если снизить расходы на кафе и развлечения на 20%, цель «Ноутбук» будет достигнута на месяц раньше.</p>
+</section>
+{% endblock %}

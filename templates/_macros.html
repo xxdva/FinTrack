@@ -1,0 +1,23 @@
+{% macro amount_class(value) -%}
+{{ 'text-income' if value.startswith('+') else 'text-expense' }}
+{%- endmacro %}
+
+{% macro type_toggle(selected='Расход') -%}
+<div class="field">
+  <span class="field__label">Тип операции</span>
+  <div class="btn-group btn-group--10" data-toggle>
+    <button type="button" class="btn {{ 'btn--expense' if selected == 'Расход' else 'btn--outline' }}" data-value="Расход">Расход</button>
+    <button type="button" class="btn {{ 'btn--income' if selected == 'Доход' else 'btn--outline' }}" data-value="Доход">Доход</button>
+  </div>
+  <input type="hidden" name="type" value="{{ selected }}">
+</div>
+{%- endmacro %}
+
+{% macro select(name, label, options, selected) -%}
+<label class="field">
+  <span class="field__label">{{ label }}</span>
+  <select class="input" name="{{ name }}">
+    {% for o in options %}<option{% if o == selected %} selected{% endif %}>{{ o }}</option>{% endfor %}
+  </select>
+</label>
+{%- endmacro %}

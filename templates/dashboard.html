@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% from "_macros.html" import amount_class %}
+{% block content %}
+<div class="header">
+  <div class="title">
+    <h1>Добрый день, {{ user_name }}!</h1>
+    <p>Октябрь 2026</p>
+  </div>
+  <a class="btn btn--accent" href="{{ url_for('add_operation') }}">+ Добавить операцию</a>
+</div>
+
+<div class="stats">
+  <div class="card stat">
+    <span class="stat__label">Общий баланс</span>
+    <span class="stat__value">128 610 ₸</span>
+  </div>
+  <div class="card stat">
+    <span class="stat__label">Доходы за месяц</span>
+    <span class="stat__value text-income">+120 000 ₸</span>
+  </div>
+  <div class="card stat">
+    <span class="stat__label">Расходы за месяц</span>
+    <span class="stat__value text-expense">-75 390 ₸</span>
+  </div>
+</div>
+
+<div class="row row--stretch">
+  <section class="card grow">
+    <h2 class="card__title">Расходы по категориям</h2>
+    {% for bar in bars %}
+    <div class="hbar">
+      <span class="hbar__label">{{ bar.name }}</span>
+      <div class="hbar__bar bg-{{ bar.color }}" style="width: {{ (bar.value / max_value * 350) | round | int }}px"></div>
+      <span class="hbar__value">{{ '%.1f' | format(bar.value) }} тыс.</span>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="card notices">
+    <h2 class="card__title">Уведомления</h2>
+    {% for n in notices %}
+    <div class="notice">
+      <div class="notice__mark bg-{{ n.color }}"></div>
+      <div class="notice__text">{{ n.text }}</div>
+    </div>
+    {% endfor %}
+  </section>
+</div>
+
+<section class="card">
+  <h2 class="card__title">Последние операции</h2>
+  <div class="table">
+    <div class="table__head">
+      <div class="table__cell" style="width:150px">Дата</div>
+      <div class="table__cell" style="width:130px">Тип</div>
+      <div class="table__cell" style="width:210px">Категория</div>
+      <div class="table__cell" style="width:170px">Сумма, ₸</div>
+      <div class="table__cell">Счёт</div>
+    </div>
+    {% for op in recent %}
+    <div class="table__row">
+      <div class="table__cell" style="width:150px">{{ op.date }}</div>
+      <div class="table__cell" style="width:130px">{{ op.type }}</div>
+      <div class="table__cell" style="width:210px">{{ op.category }}</div>
+      <div class="table__cell {{ amount_class(op.amount) }}" style="width:170px">{{ op.amount }}</div>
+      <div class="table__cell">{{ op.account }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

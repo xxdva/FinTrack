@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "_macros.html" import type_toggle, select %}
+{% block content %}
+<div class="header">
+  <div class="title"><h1>Редактирование операции № {{ op.id }}</h1></div>
+</div>
+
+<div class="row">
+  <form class="card card--form grow" id="operation-form" data-toast="✓ Изменения сохранены" novalidate>
+    {{ type_toggle(op.type) }}
+
+    <div class="field-row">
+      <label class="field">
+        <span class="field__label">Сумма, ₸</span>
+        <input class="input" name="amount" value="{{ op.amount.lstrip('+-') }}" inputmode="numeric" data-amount>
+      </label>
+      <label class="field">
+        <span class="field__label">Дата</span>
+        <input class="input" name="date" value="{{ op.date }}">
+      </label>
+    </div>
+
+    <div class="field-row">
+      {{ select('category', 'Категория', categories, op.category) }}
+      {{ select('account', 'Счёт', accounts, op.account) }}
+    </div>
+
+    <label class="field">
+      <span class="field__label">Комментарий</span>
+      <input class="input" name="comment" value="{{ op.comment }} (изменить)">
+    </label>
+
+    <p class="hint">Создано: {{ op.date }} 18:42      Изменено: —</p>
+
+    <div class="btn-group btn-group--16" style="min-height:100px">
+      <button type="submit" class="btn btn--income">Сохранить изменения</button>
+      <a class="btn btn--outline" href="{{ url_for('operations') }}">Отмена</a>
+      <div class="grow"></div>
+      <button type="button" class="btn btn--expense" data-open-dialog>Удалить</button>
+    </div>
+  </form>
+
+  <div class="side-panel">
+    <div class="dialog" data-dialog>
+      <p class="dialog__title">Удалить операцию?</p>
+      <p class="dialog__text">Действие нельзя отменить. Операция будет удалена из базы.</p>
+      <div class="btn-group btn-group--12">
+        <a class="btn btn--expense" href="{{ url_for('operations') }}">Да</a>
+        <button type="button" class="btn btn--outline" data-close-dialog>Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" data-toast-el></div>
+{% endblock %}

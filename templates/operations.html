@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% from "_macros.html" import amount_class %}
+{% block content %}
+<div class="header">
+  <div class="title"><h1>Все операции</h1></div>
+  <a class="btn btn--accent" href="{{ url_for('add_operation') }}">+ Добавить операцию</a>
+</div>
+
+<form class="card" id="filters">
+  <div class="row" style="gap:16px">
+    <label class="field grow">
+      <span class="field__label">Поиск</span>
+      <input class="input" name="q" placeholder="Поиск по комментарию…">
+    </label>
+    <label class="field" style="flex:0 0 150px">
+      <span class="field__label">Тип</span>
+      <select class="input" name="type">
+        <option value="">Все</option><option>Доход</option><option>Расход</option>
+      </select>
+    </label>
+    <label class="field" style="flex:0 0 190px">
+      <span class="field__label">Категория</span>
+      <select class="input" name="category">
+        <option value="">Все</option>
+        {% for c in categories + ['Стипендия', 'Подработка'] %}<option>{{ c }}</option>{% endfor %}
+      </select>
+    </label>
+    <label class="field" style="flex:0 0 230px">
+      <span class="field__label">Период</span>
+      <input class="input" name="period" value="01.10 – 31.10.2026">
+    </label>
+  </div>
+  <div class="btn-group">
+    <button type="submit" class="btn btn--accent">Найти</button>
+    <button type="reset" class="btn btn--outline">Сбросить</button>
+    <button type="button" class="btn btn--outline" data-sort>Сортировка: дата ▾</button>
+  </div>
+</form>
+
+<section class="card">
+  <div class="table" data-table>
+    <div class="table__head">
+      <div class="table__cell" style="width:130px">Дата</div>
+      <div class="table__cell" style="width:100px">Тип</div>
+      <div class="table__cell" style="width:160px">Категория</div>
+      <div class="table__cell" style="width:130px">Сумма, ₸</div>
+      <div class="table__cell" style="width:150px">Счёт</div>
+      <div class="table__cell">Комментарий</div>
+    </div>
+    {% for op in operations %}
+    <div class="table__row table__row--selectable{% if op.id == 2 %} is-selected{% endif %}"
+         data-id="{{ op.id }}" data-type="{{ op.type }}" data-category="{{ op.category }}"
+         data-comment="{{ op.comment }}" data-amount="{{ op.amount }}">
+      <div class="table__cell" style="width:130px">{{ op.date }}</div>
+      <div class="table__cell" style="width:100px">{{ op.type }}</div>
+      <div class="table__cell" style="width:160px">{{ op.category }}</div>
+      <div class="table__cell {{ amount_class(op.amount) }}" style="width:130px">{{ op.amount }}</div>
+      <div class="table__cell" style="width:150px">{{ op.account }}</div>
+      <div class="table__cell">{{ op.comment }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="summary">
+  <span class="summary__text" data-summary>Найдено операций: 10   |   Доходы: +120 000 ₸   |   Расходы: -75 390 ₸</span>
+  <div class="btn-group">
+    <a class="btn btn--outline" href="{{ url_for('edit_operation', op_id=2) }}" data-edit-link>Изменить</a>
+    <button type="button" class="btn btn--expense" data-delete-selected>Удалить</button>
+  </div>
+</div>
+{% endblock %}

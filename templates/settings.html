@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="header">
+  <div class="title"><h1>Настройки</h1></div>
+</div>
+
+<div class="row row--stretch">
+  <section class="card grow">
+    <h2 class="card__title">Категории</h2>
+    {% for c in categories %}
+    <div class="notice"><div class="notice__mark bg-accent" style="height:auto"></div><div class="notice__text" style="font-size:14px">{{ c }}</div></div>
+    {% endfor %}
+  </section>
+  <section class="card grow">
+    <h2 class="card__title">Счета</h2>
+    {% for a in accounts %}
+    <div class="notice"><div class="notice__mark bg-income" style="height:auto"></div><div class="notice__text" style="font-size:14px">{{ a }}</div></div>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="header">
+  <div class="title"><h1>Бюджеты и цели накопления</h1></div>
+  <button type="button" class="btn btn--accent">+ Новая цель</button>
+</div>
+
+<div class="row row--stretch">
+  <section class="card grow limits">
+    <h2 class="card__title">Лимиты по категориям (месяц)</h2>
+    {% for l in limits %}
+    <div class="limit">
+      <div class="limit__row">
+        <span class="limit__name">{{ l.name }}</span>
+        <span class="limit__amount">{{ l.spent }} / {{ l.limit }}</span>
+      </div>
+      <div class="progress">
+        <div class="progress__fill bg-{{ 'expense' if l.percent >= 100 else ('warning' if l.percent >= 80 else 'accent') }}" style="width: {{ l.percent }}%"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="card grow limits">
+    <h2 class="card__title">Цели накопления</h2>
+    {% for g in goals %}
+    <div class="goal">
+      <div class="goal__row"><span>{{ g.name }}</span><span>{{ g.percent }}%</span></div>
+      <span class="goal__amount">{{ g.saved }} из {{ g.target }} ₸</span>
+      <div class="progress"><div class="progress__fill bg-income" style="width: {{ g.percent }}%"></div></div>
+    </div>
+    {% endfor %}
+  </section>
+</div>
+
+<div class="btn-group btn-group--16">
+  <button type="button" class="btn btn--outline">Изменить лимит</button>
+  <button type="button" class="btn btn--income">Пополнить цель</button>
+</div>
+{% endblock %}
